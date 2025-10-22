@@ -6,12 +6,11 @@ const EventEmitter = require("events");
 const PORT = 3000;
 
 class UpperCaseStream extends Transform {
-  _transform(chunk, encoding, callback) {
+  _transform(chunk, _encoding, callback) {
     callback(null, chunk.toString().toUpperCase());
   }
 }
 
-const upper = new UpperCaseStream();
 class Logger extends EventEmitter {
   info(msg) {
     console.log(`[SERVER INFO]: ${msg}`);
@@ -38,8 +37,10 @@ const server = http.createServer((req, res) => {
     res.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
 
     const src = fs.createReadStream("data.txt");
+    const upper = new UpperCaseStream();
+    // const dest = fs.createWriteStream('UpperfromServer.txt')
 
-    pipeline(src, upper, res, (err) => {
+    pipeline(src, upper,  res, (err) => {
       if (err) {
         logger.error(`Ошибка обработки потока: ${err.message}`);
 
@@ -64,5 +65,5 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, () => {
-  logger.info(`Сервер запущен на ${PORT}`);
+  logger.info(`Сервер запущен на порту ${PORT}`);
 });
