@@ -45,9 +45,9 @@ const server = http.createServer(async (req, res) => {
         const url = new URL(req.url, `http://${req.headers.host}`);
         const { pathname, searchParams} = url;
 
-        if (req.method === 'GET' && pathname === '/api/random') {
-            const min = Number(searchParams.get('min'))
-            const max = Number(searchParams.get('max'))
+        if (req.method === 'GET' && pathname === '/random') {
+            const min = Number(searchParams.get('min'), 10)
+            const max = Number(searchParams.get('max'), 20)
 
             if(Number.isNaN(min) || Number.isNaN(max)){
                 return send(400, {error: 'min and max need to be a numbers'})
