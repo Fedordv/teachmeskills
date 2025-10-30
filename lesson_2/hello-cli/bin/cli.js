@@ -33,6 +33,7 @@ function printHelp() {
     console.log(' add          [a b c ...]    Summa digit')
     console.log(' now          show date and time at the moment');
     console.log(' version      show version of the program');
+    console.log(' config set <ключ><значение>    Установить новое значение');
     // console,log('\n all options')
 }
 
@@ -83,19 +84,30 @@ async function main() {
       console.log(pkg.version);
       break;
     }
-
     case 'config': {
-      if(subcommand === 'get'){
-        console.log('Вот что вывело при get', cfg)
-      }else if (subcommand === 'set') {
-        const  [key, value] = rest
-        cfg[key] = value;
-        saveConfig(cfg);
-        console.log(`Config updated: ${key} = ${value}`);
-      }
+        if (subcommand === 'get') {
+          console.log('Текущие настройки:', cfg);
+        } 
+        else if (subcommand === 'set') {
+          const [key, value] = rest; // достаём аргументы после 'set'
 
-      break;
+          if (!key || !value) { // проверка на наличие аргументов
+            console.log('Ошибка: нужно указать ключ и значение.');
+            console.log('Пример: node app.js config set theme dark');
+          } else {
+            cfg[key] = value;      // сохраняем новое значение
+            saveConfig(cfg);       // вызываем функцию, которая записывает в файл
+            console.log(`Настройка сохранена: ${key} = ${value}`);
+          }
+        } 
+        else {
+          console.log(`Неизвестная команда для config: ${subcommand}`);
+          printHelp(); // показываем помощь
+        }
+
+        break;
     }
+
 
     case 'now': {
       Console.log(new Date().toString());

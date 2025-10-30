@@ -46,11 +46,16 @@ const server = http.createServer(async (req, res) => {
         const { pathname, searchParams} = url;
 
         if (req.method === 'GET' && pathname === '/random') {
-            const min = Number(searchParams.get('min'), 10)
-            const max = Number(searchParams.get('max'), 20)
+            const min = Number(searchParams.get('min')) || 10;
+            const max = Number(searchParams.get('max')) || 20;
 
-            if(Number.isNaN(min) || Number.isNaN(max)){
-                return send(400, {error: 'min and max need to be a numbers'})
+
+            if (Number.isNaN(min) || Number.isNaN(max)) {
+              return send(422, { error: "Invalid type. MIN ans MAX should be numbers" });
+            }
+
+            if (min < 10 || min > 20 || max < 10 || max > 20) {
+                send(400, { error: "MIN ans MAX must be between 10 and 20" });
             }
 
             const random = Math.floor(Math.random() * (max - min + 1) ) + min;
