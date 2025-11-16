@@ -20,6 +20,3 @@ update users set last_name = 'Shoroh' where id = 5;
 
 select * from users
 where is_active  = true
-
-select * from users 
-where last_name ='Dobrynin'
