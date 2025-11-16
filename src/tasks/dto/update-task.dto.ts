@@ -8,5 +8,5 @@ export class UpdateTaskDto {
 
   @IsOptional()
   @IsBoolean()
-  completed?: boolean;
+  completed?: boolean = false;
 }
