@@ -90,6 +90,7 @@ export class TasksController {
   }
 
   @Patch(':id/restore')
+  @HttpCode(201)
   restore(@Param('id', new ParseUUIDPipe()) id: string) {
     return this.tasks.restore(id);
   }
